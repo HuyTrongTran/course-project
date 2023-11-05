@@ -3,11 +3,14 @@ import { Request, Response, NextFunction } from "express";
 import userModel, { IUser } from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
-import jwt, { Secret } from "jsonwebtoken";
+import jwt, {JwtPayload, Secret } from "jsonwebtoken";
 import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendMail";
-import { sendToken } from "../utils/jwt";
+import { sendToken} from "../utils/jwt";
+import { redis } from "../utils/redis";
+
+
 
 //register user
 interface IRegistrationBody {
@@ -162,11 +165,14 @@ export const loginUser = CatchAsyncError(
 
 // Logout user
 export const logoutUser = CatchAsyncError(
+  
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.cookie("access_token", "", { maxAge: 1 });
       res.cookie("refresh_token", "", { maxAge: 1 });
-      res.status(200).json({
+      const userId = req.user?._id || ""
+      redis.del(userId)
+      res.status(200).json({  
         success: true,
         message: "Logged out successfully",
       });
