@@ -111,12 +111,16 @@ export const activateUser = CatchAsyncError(
         process.env.ACTIVATION_SECRET as string
       ) as { user: IUser; activationCode: string };
 
+      if (newUser.activationCode !== activation_code) {
+        return next(new ErrorHandler("Invalid activation code", 400));
+      }
+
       const { name, email, password } = newUser.user;
 
       const existUser = await userModel.findOne({ email });
 
       if (existUser) {
-        return next(new ErrorHandler("Email already exists", 400));
+        return next(new ErrorHandler("Email already exist", 400));
       }
       const user = await userModel.create({
         name,
