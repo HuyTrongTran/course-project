@@ -5,7 +5,7 @@ import { isAuthenticated } from '../middleware/auth';
 
 const userRouter = express.Router();
 
-userRouter.post('/registration', registrationUser)
+userRouter.post('/registration/', registrationUser)
 
 userRouter.post('/activate-user', activateUser)
 
