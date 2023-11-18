@@ -20,16 +20,16 @@ interface ILink extends Document {
 }
 
 interface ICourseData extends Document {
-    title: string;
-    description: string;
-    videoUrl: string;
-    videoThumbnail: object;
-    videoSection: string;
-    videoLength: number;
-    videoPlayer: string;
-    links: ILink[];
-    suggestion: string;
-    questions: IComment[];
+  title: string;
+  description: string;
+  videoUrl: string;
+  videoThumbnail: object;
+  videoSection: string;
+  videoLength: number;
+  videoPlayer: string;
+  links: ILink[];
+  suggestion: string;
+  questions: IComment[];
 }
 
 export interface ICourse extends Document {
@@ -78,72 +78,74 @@ const commentSchema = new Schema<IComment>(
 );
 
 const courseDataSchema = new Schema<ICourseData>({
-    videoUrl: String,
-    videoThumbnail: Object,
-    title: String,
-    videoSection: String,
-    description: String,
-    videoLength: Number,
-    videoPlayer: String,
-    links: [linkSchema],
-    suggestion: String,
-    questions: [commentSchema],
-  });
+  videoUrl: String,
+  videoThumbnail: Object,
+  title: String,
+  videoSection: String,
+  description: String,
+  videoLength: Number,
+  videoPlayer: String,
+  links: [linkSchema],
+  suggestion: String,
+  questions: [commentSchema],
+});
 
-  const courseSchema = new Schema<ICourse>({
-  name: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  categories:{
-    type:String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  estimatedPrice: {
-    type: Number,
-  },
-  thumbnail: {
-    public_id: {
+const courseSchema = new Schema<ICourse>(
+  {
+    name: {
       type: String,
+      required: true,
     },
-    url: {
+    description: {
       type: String,
+      required: true,
+    },
+    categories: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    estimatedPrice: {
+      type: Number,
+    },
+    thumbnail: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
+    tags: {
+      type: String,
+      required: true,
+    },
+    level: {
+      type: String,
+      required: true,
+    },
+    demoUrl: {
+      type: String,
+      required: true,
+    },
+    benefits: [{ title: String }],
+    prerequisites: [{ title: String }],
+    reviews: [reviewSchema],
+    courseData: [courseDataSchema],
+    ratings: {
+      type: Number,
+      default: 0,
+    },
+    purchased: {
+      type: Number,
+      default: 0,
     },
   },
-  tags:{
-    type: String,
-    required: true,
-  },
-  level:{
-    type: String,
-    required: true,
-  },
-  demoUrl:{
-    type: String,
-    required: true,
-  },
-  benefits: [{title: String}],
-  prerequisites: [{title: String}],
-  reviews: [reviewSchema],
-   courseData: [courseDataSchema],
-   ratings:{
-     type: Number,
-     default: 0,
-   },
-   purchased:{
-    type: Number,
-    default: 0,
-   },
-},{timestamps: true});
-
+  { timestamps: true }
+);
 
 const CourseModel: Model<ICourse> = mongoose.model("Course", courseSchema);
 

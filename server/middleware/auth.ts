@@ -30,7 +30,7 @@ export const isAuthenticated = CatchAsyncError(async(req: Request, res: Response
     const user = await redis.get(decoded.id);
 
     if(!user) {
-        return next(new ErrorHandler("user is not found.", 400));
+        return next(new ErrorHandler("Please login to access this resource", 400));
     }
 
     req.user = JSON.parse(user);
@@ -39,7 +39,7 @@ export const isAuthenticated = CatchAsyncError(async(req: Request, res: Response
 })
 
 // Validate user role
-export const authorizaRoles = (...roles: string[]) => {
+export const authorizeRoles = (...roles: string[]) => {
     return (req:Request, res:Response, next:NextFunction) => {
         if(!roles.includes(req.user?.role || "")){
             return next(new ErrorHandler(`Role:${req.user?.role} is not allowed`, 400));
