@@ -8,14 +8,19 @@ import {
   HiOutlineMenuAlt3,
   HiOutlineUserCircle,
 } from "react-icons/hi";
+import CustomModal from "../utils/CustomModal";
+import Login  from "../components/Auth/Login";
+import SignUp from "../components/Auth/SignUp";
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   activeItem: number;
+  route: string;
+  setRoute: (route: string) => void
 };
 
-const Header: FC<Props> = ({ activeItem, setOpen }) => {
+const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   if (typeof window !== "undefined") {
@@ -34,7 +39,7 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
     }
   };
   return (
-    <div className="w-full-relative">
+    <div className="w-full relative">
       <div
         className={`${
           active
@@ -66,7 +71,7 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
               <HiOutlineUserCircle
                 size={25}
                 className="hidden 800px:block cursor-pointer dark:text-white text-black"
-                onClick={() => setOpen(false)}
+                onClick={() => setOpen(true)}
               />
             </div>
           </div>
@@ -94,6 +99,32 @@ const Header: FC<Props> = ({ activeItem, setOpen }) => {
           </div>
         )}
       </div>
+      {route === "Login" && (
+          <>
+            {open && (
+              <CustomModal
+                open={open}
+                setOpen={setOpen}
+                setRoute={setRoute}
+                activeItem={activeItem}
+                component={Login}             
+              />
+            )}
+          </>
+        )}
+        {route === "Sign-Up" && (
+          <>
+            {open && (
+              <CustomModal
+                open={open}
+                setOpen={setOpen}
+                setRoute={setRoute}
+                activeItem={activeItem}
+                component={SignUp}             
+              />
+            )}
+          </>
+        )}
     </div>
   );
 };
