@@ -9,9 +9,9 @@ import { redis } from "../utils/redis";
 import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendMail";
-import notificationModel from "../models/notificationModel";
+import axios from "axios";
 import NotificationModel from "../models/notificationModel";
-import courseRouter from "../routes/course.route";
+
 
 // upload course
 export const uploadCourse = CatchAsyncError(
@@ -22,7 +22,7 @@ export const uploadCourse = CatchAsyncError(
       
       if (thumbnail) {
         const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-          folder: "course",
+          folder: "courses",
         });
 
         data.thumbnail = {
@@ -204,7 +204,7 @@ export const addQuestion = CatchAsyncError(
       // add this question to our course content
       couseContent.questions.push(newQuestion);
 
-      await notificationModel.create({
+      await NotificationModel.create({
         user: req.user?._id,
         title: "New Question Received",
         message: `You have a new question in ${couseContent.title}`,
@@ -425,7 +425,7 @@ export const addReplyToReview = CatchAsyncError(
 );
 
 // get all courses --- only for admin
-export const getAllUsers = CatchAsyncError(
+export const getAdminAllCourses = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       getAllCoursesService(res);
@@ -459,3 +459,26 @@ export const deleteCourse = CatchAsyncError(async(req: Request, res: Response, n
     return next(new ErrorHandler(error.message, 400));
   }
 })
+
+// generate video url
+export const generateVideoUrl = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { videoId } = req.body;
+      const response = await axios.post(
+        `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
+        { ttl: 300 },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Apisecret ${process.env.VDOCIPHER_API_SECRET}`,
+          },
+        }
+      );
+      res.json(response.data);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
