@@ -9,14 +9,13 @@ export const store = configureStore({
         auth: authSlice
     },
     devTools: false,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware)
-})
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(apiSlice.middleware),
+});
 
-// Call the refresh
-const initialApp = async () => {
-    await store.dispatch(apiSlice.endpoints.refreshToken.initiate({}, {forceRefetch: true}))
+// Call the load user
+const initializeApp = async () => {
+    await store.dispatch(apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true }));
+};
 
-    await store.dispatch(apiSlice.endpoints.loadUser.initiate({}, {forceRefetch: true}))
-}
-
-initialApp()
+initializeApp()

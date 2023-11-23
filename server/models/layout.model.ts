@@ -1,6 +1,6 @@
 import { Schema,model,Document } from "mongoose";
 
-interface FaqItem extends Document {
+export interface FaqItem extends Document{
     question: string;
     answer: string;
 }
