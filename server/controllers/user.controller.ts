@@ -231,7 +231,7 @@ export const updateAccessToken = CatchAsyncError(
       req.user = user;
 
       res.cookie("access_token", accessToken, accessTokenOptions);
-      res.cookie("refresh_token", accessToken, refreshTokenOptions);
+      res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
       await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7days
 
@@ -258,16 +258,16 @@ export const getUserInfo = CatchAsyncError(
 );
 
 // social auth
-interface ISocicalAuthBody {
+interface ISocialAuthBody {
   email: string;
   name: string;
   avatar: string;
 }
 
 export const socialAuth = CatchAsyncError(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction)  => {
     try {
-      const { email, name, avatar } = req.body;
+      const { email, name, avatar } = req.body as ISocialAuthBody;
       const user = await userModel.findOne({ email });
       if (!user) {
         const newUser = await userModel.create({ email, name, avatar });
