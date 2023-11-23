@@ -37,7 +37,7 @@ const CoursePreview: FC<Props> = ({
 
 
     return (
-        <div className="w-[90%] m-auto py-5 mb-5">
+        <div className="w-[90%] text-black dark:text-white m-auto py-5 mb-5">
             <div className="w-full relative">
                 <div className="w-full mt-10">
                     <CoursePlayer
@@ -73,7 +73,7 @@ const CoursePreview: FC<Props> = ({
                         className={`${styles.input} 1500px:!w-[50%] 1100px:w-[60%] ml-3 !mt-0`}
                     />
                     <div
-                        className={`${styles.button} !w-[120px] my-3 ml-4 font-Poppins cursor-pointer`}
+                        className={`${styles.button} !w-[120px]  my-3 ml-4 font-Poppins cursor-pointer`}
                     >
                         Apply
                     </div>
@@ -85,10 +85,10 @@ const CoursePreview: FC<Props> = ({
             </div>
             <div className="w-full">
                 <div className="w-full 800px:pr-5">
-                    <h1 className="text-[25px] font-Poppins font-[600]">
+                    <h1 className="text-[25px] text-black dark:text-white font-Poppins font-[600]">
                         {courseData?.name}
                     </h1>
-                    <div className="flex items-center justify-between pt-3">
+                    <div className="flex text-black dark:text-white items-center justify-between pt-3">
                         <div className="flex items-center">
                             <Ratings rating={0} />
                             <h5>0 Reviews</h5>
@@ -96,7 +96,7 @@ const CoursePreview: FC<Props> = ({
                         <h5>0 Students</h5>
                     </div>
                     <br />
-                    <h1 className="text-[25px] font-Poppins font-[600]">
+                    <h1 className="text-[25px] text-black dark:text-white font-Poppins font-[600]">
                         What you will learn from this course?
                     </h1>
                 </div>
@@ -112,7 +112,7 @@ const CoursePreview: FC<Props> = ({
                 <br />
                 {/* course description */}
                 <div className="w-full">
-                    <h1 className="text-[25px] font-Poppins font-[600]">
+                    <h1 className="text-[25px] text-black dark:text-white font-Poppins font-[600]">
                         Course Details
                     </h1>
                     <p className="text-[18px] mt-[20px] whitespace-pre-line w-full overflow-hidden">
@@ -122,15 +122,15 @@ const CoursePreview: FC<Props> = ({
                 <br />
                 <br />
             </div>
-            <div className="w-full flex items-center justify-between">
+            <div className="w-full text-black dark:text-white flex items-center justify-between">
                 <div
-                    className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
+                    className="w-full text-black dark:text-white  800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center  rounded mt-8 cursor-pointer"
                     onClick={() => prevButton()}
                 >
                     Prev
                 </div>
                 <div
-                    className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
+                    className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-black dark:text-white rounded mt-8 cursor-pointer"
                     onClick={() => createCourse()}
                 >
                     {
