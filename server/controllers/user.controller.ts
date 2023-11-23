@@ -235,7 +235,7 @@ export const updateAccessToken = CatchAsyncError(
 
       await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7days
 
-      next();
+       return next();
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
@@ -421,25 +421,35 @@ export const getAllUsers = CatchAsyncError(
 // update user role --- only for admin
 export const updateUserRole = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id, role } = req.body;
-    updateUserRoleService(res, id, role);
+    const { email, role } = req.body;
+    const isUserExist = await userModel.findOne({ email });
+    if (isUserExist) {
+      const id = isUserExist._id;
+      updateUserRoleService(res, id, role);
+    }
+    else {
+      res.status(400).json({
+        success: false,
+        message: "User not found"
+      })
+    }
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));
   }
 });
 
 // Delete user --- only for admin
-export const deleteUser = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = CatchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const user = await userModel.findById(id);
 
-    if(!user){
+    if (!user) {
       return next(new ErrorHandler("User not found", 404));
     }
 
-    await user.deleteOne({id});
+    await user.deleteOne({ id });
 
     await redis.del(id);
 
@@ -448,7 +458,7 @@ export const deleteUser = CatchAsyncError(async(req: Request, res: Response, nex
       message: "User deleted successfully"
     });
 
-  } catch (error:any) {
+  } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));
   }
 })

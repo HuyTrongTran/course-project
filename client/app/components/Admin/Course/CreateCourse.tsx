@@ -1,11 +1,11 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CourseInformation from './CourseInformation'
 import CourseOptions from './CourseOptions'
 import CourseData from './CourseData'
 import CourseContent from './CourseContent'
 import CoursePreview from './CoursePreview'
-import { useCreateCourseMutation } from '@/redux/features/courses/coursesApi'
+import { useCreateCourseMutation } from '../../../../redux/features/courses/coursesApi'
 import toast from 'react-hot-toast'
 import { redirect } from 'next/navigation'
 
@@ -16,16 +16,17 @@ const CreateCourse = (props: Props) => {
 
     useEffect(() => {
         if (isSuccess) {
-            toast.success("Course created successfully");
-            redirect("/admin/all-courses");
+            toast.success("course created successfully");
+            redirect("/admin/courses")
         }
         if (error) {
             if ("data" in error) {
                 const errorMessage = error as any;
-                toast.error(errorMessage.data.message);
+                toast.error(errorMessage.data.message)
             }
         }
     }, [isSuccess, error]);
+
 
     const [active, setActive] = useState(0);
     const [courseInfo, setCourseInfo] = useState({
@@ -35,6 +36,7 @@ const CreateCourse = (props: Props) => {
         estimatedPrice: "",
         tags: "",
         level: "",
+        categories: "",
         demoUrl: "",
         thumbnail: "",
     });
@@ -46,6 +48,7 @@ const CreateCourse = (props: Props) => {
             title: "",
             description: "",
             videoSection: "Untitled Section",
+            videoLength: "",
             links: [
                 {
                     title: "",
@@ -74,20 +77,18 @@ const CreateCourse = (props: Props) => {
                 videoUrl: courseContent.videoUrl,
                 title: courseContent.title,
                 description: courseContent.description,
+                videoLength: courseContent.videoLength,
                 videoSection: courseContent.videoSection,
                 links: courseContent.links.map((link) => ({
                     title: link.title,
                     url: link.url,
                 })),
                 suggestion: courseContent.suggestion,
-            })
-        );
+            }));
 
-        //   prepare our data object
         const data = {
             name: courseInfo.name,
             description: courseInfo.description,
-            
             price: courseInfo.price,
             estimatedPrice: courseInfo.estimatedPrice,
             tags: courseInfo.tags,
@@ -108,6 +109,7 @@ const CreateCourse = (props: Props) => {
             await createCourse(data);
         }
     };
+
 
     return (
         <div className="w-full flex min-h-screen">
@@ -159,4 +161,4 @@ const CreateCourse = (props: Props) => {
     )
 }
 
-export default CreateCourse
+export default CreateCourse;

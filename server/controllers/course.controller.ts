@@ -19,7 +19,7 @@ export const uploadCourse = CatchAsyncError(
     try {
       const data = req.body;
       const thumbnail = data.thumbnail;
-      
+
       if (thumbnail) {
         const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
           folder: "courses",
@@ -48,7 +48,7 @@ export const editCourse = CatchAsyncError(
 
       const courseId = req.params.id;
 
-      const courseData = (await CourseModel.findById(courseId)) as any;
+      const courseData = await CourseModel.findById(courseId) as any;
 
       if (thumbnail && !thumbnail.startsWith("https")) {
         await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
@@ -436,29 +436,30 @@ export const getAdminAllCourses = CatchAsyncError(
 );
 
 // Delete Courses --- only for admin
-export const deleteCourse = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
-  try {
-    const {id} = req.params;
+export const deleteCourse = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
 
-    const course = await CourseModel.findById(id);
+      const course = await CourseModel.findById(id);
 
-    if(!course){
-      return next(new ErrorHandler("User not found", 404));
+      if (!course) {
+        return next(new ErrorHandler("course not found", 404));
+      }
+
+      await course.deleteOne({ id });
+
+      await redis.del(id);
+
+      res.status(200).json({
+        success: true,
+        message: "course deleted successfully",
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
     }
-
-    await course.deleteOne({id});
-
-    await redis.del(id);
-
-    res.status(200).json({
-      success: true,
-      message: "User deleted successfully"
-    });
-
-  } catch (error:any) {
-    return next(new ErrorHandler(error.message, 400));
   }
-})
+);
 
 // generate video url
 export const generateVideoUrl = CatchAsyncError(

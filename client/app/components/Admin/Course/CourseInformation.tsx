@@ -1,5 +1,6 @@
 import { styles } from '@/app/styles/styles';
-import React, { FC, useState } from 'react'
+import { useGetHeroDataQuery } from '@/redux/features/layout/layoutApi';
+import React, { FC, useEffect, useState } from 'react'
 
 type Props = {
     courseInfo: any;
@@ -15,6 +16,14 @@ const CourseInformation: FC<Props> = ({
     setActive,
 }) => {
     const [dragging, setDragging] = useState(false);
+    const { data } = useGetHeroDataQuery("Categories", {});
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        if (data) {
+            setCategories(data.layout.categories);
+        }
+    }, [data]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -65,9 +74,7 @@ const CourseInformation: FC<Props> = ({
         <div className="w-[80%] m-auto mt-24">
             <form onSubmit={handleSubmit} className={`${styles.label}`}>
                 <div>
-                    <label htmlFor="">
-                        Course Name
-                    </label>
+                    <label htmlFor="">Course Name</label>
                     <input
                         type="name"
                         name=""
@@ -79,7 +86,7 @@ const CourseInformation: FC<Props> = ({
                         id="name"
                         placeholder="MERN stack LMS platform with next 13"
                         className={`
-                        ${styles.input}`}
+                    ${styles.input}`}
                     />
                 </div>
                 <br />
@@ -90,7 +97,7 @@ const CourseInformation: FC<Props> = ({
                         id=""
                         cols={30}
                         rows={8}
-                        placeholder="Write description for the course..."
+                        placeholder="Write something amazing..."
                         className={`${styles.input} !h-min !py-2`}
                         value={courseInfo.description}
                         onChange={(e: any) =>
@@ -154,7 +161,26 @@ const CourseInformation: FC<Props> = ({
                             ${styles.input}`}
                         />
                     </div>
-
+                    <div className="w-[50%]">
+                        <label className={`${styles.label} w-[50%]`}>Course Categires</label>
+                        <select
+                            name=""
+                            id=""
+                            className={`${styles.input}`}
+                            value={courseInfo.category}
+                            onChange={(e: any) =>
+                                setCourseInfo({ ...courseInfo, categories: e.target.value })
+                            }
+                        >
+                            <option value="">Select Category</option>
+                            {categories &&
+                                categories.map((item: any) => (
+                                    <option value={item.title} key={item._id}>
+                                        {item.title}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
                 </div>
                 <br />
                 <div className="w-full flex justify-between">
@@ -192,16 +218,17 @@ const CourseInformation: FC<Props> = ({
                     </div>
                 </div>
                 <br />
-                <div className='w-full'>
+                <div className="w-full">
                     <input
                         type="file"
-                        accept='image/*'
-                        id='file'
-                        className='hidden'
+                        accept="image/*"
+                        id="file"
+                        className="hidden"
                         onChange={handleFileChange}
                     />
-                    <label
-                        htmlFor="file"
+                </div>
+                <div>
+                    <label htmlFor="file"
                         className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${dragging ? "bg-blue-500" : "bg-transparent"
                             }`}
                         onDragOver={handleDragOver}
@@ -223,17 +250,15 @@ const CourseInformation: FC<Props> = ({
                 </div>
                 <br />
                 <div className="w-full flex items-center justify-end">
-                    <input
-                        type="submit"
+                    <input type="submit"
                         value="Next"
-                        className="w-full 800px:w-[180px] h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
-                    />
+                        className="w-full 800px:w-[180px] h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer" />
                 </div>
                 <br />
                 <br />
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default CourseInformation

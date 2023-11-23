@@ -1,7 +1,7 @@
-import { styles } from '@/app/styles/styles';
 import React, { FC } from 'react'
 import CoursePlayer from "../../../utils/CoursePlayer";
-import Ratings from "../../../../app/utils/Ratings";
+import { styles } from "../../../../app/styles/styles";
+import Ratings from '@/app/utils/Ratings';
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 
 
@@ -20,7 +20,6 @@ const CoursePreview: FC<Props> = ({
     active,
     isEdit
 }) => {
-
     const dicountPercentenge =
         ((courseData?.estimatedPrice - courseData?.price) /
             courseData?.estimatedPrice) *
@@ -58,7 +57,6 @@ const CoursePreview: FC<Props> = ({
                         {discountPercentengePrice}% Off
                     </h4>
                 </div>
-
                 <div className="flex items-center">
                     <div
                         className={`${styles.button} !w-[180px] my-3 font-Poppins !bg-[crimson] cursor-not-allowed`}
@@ -66,7 +64,6 @@ const CoursePreview: FC<Props> = ({
                         Buy Now {courseData?.price}$
                     </div>
                 </div>
-
                 <div className="flex items-center">
                     <input
                         type="text"
@@ -104,19 +101,6 @@ const CoursePreview: FC<Props> = ({
                     </h1>
                 </div>
                 {courseData?.benefits?.map((item: any, index: number) => (
-                    <div className="w-full flex 800px:items-center py-2" key={index}>
-                        <div className="w-[15px] mr-1">
-                            <IoCheckmarkDoneOutline size={20} />
-                        </div>
-                        <p className="pl-2">{item.title}</p>
-                    </div>
-                ))}
-                <br />
-                <br />
-                <h1 className="text-[25px] font-Poppins font-[600]">
-                    What are the prerequisites for starting this course?
-                </h1>
-                {courseData?.prerequisites?.map((item: any, index: number) => (
                     <div className="w-full flex 800px:items-center py-2" key={index}>
                         <div className="w-[15px] mr-1">
                             <IoCheckmarkDoneOutline size={20} />
