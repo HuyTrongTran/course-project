@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mui/x-data-grid": "^6.18.1",
+    "@stripe/react-stripe-js": "^2.4.0",
     "axios": "^1.6.2",
     "img": "^3.0.3",
     "next": "14.0.2",
@@ -20,6 +21,7 @@
     "react-icon": "^1.0.0",
     "react-icons": "^4.12.0",
     "react-pro-sidebar": "^0.7.1",
+    "react-stripe-js": "^1.1.5",
     "recharts": "^2.10.1",
     "socket.io-client": "^4.7.2",
     "timeago.js": "^4.0.2"

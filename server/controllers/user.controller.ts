@@ -462,3 +462,4 @@ export const deleteUser = CatchAsyncError(async (req: Request, res: Response, ne
     return next(new ErrorHandler(error.message, 400));
   }
 })
+
