@@ -15,6 +15,7 @@ import { signIn } from "next-auth/react";
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (open: boolean) => void;
+  refetch: any;
 };
 
 const schema = Yup.object().shape({
@@ -24,25 +25,26 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute, setOpen }) => {
+const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
   const [show, setShow] = useState(false);
-  const [login, {isSuccess, data, error}] = useLoginMutation()
+  const [login, { isSuccess, data, error }] = useLoginMutation()
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {
-      await login({email,password})
+      await login({ email, password })
     },
   });
 
   useEffect(() => {
-    if(isSuccess){
-      toast.success("Login successfully")
-      setOpen(false)
+    if (isSuccess) {
+      toast.success("Login successfully");
+      setOpen(false);
+      refetch();
     }
-    if(error){
-      if("data" in error){
+    if (error) {
+      if ("data" in error) {
         const errorData = error as any
         toast.error(errorData.data.message)
       }
@@ -50,6 +52,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
   }, [isSuccess, error])
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+  
   return (
     <div className="w-full">
       <h1 className={`${styles.title}`}>Login with Elearning</h1>
@@ -81,9 +84,8 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
             onChange={handleChange}
             id="password"
             placeholder="enter your password here"
-            className={`${
-              errors.password && touched.password && "border-red-500"
-            }
+            className={`${errors.password && touched.password && "border-red-500"
+              }
                          ${styles.input}`}
           />
 
@@ -112,7 +114,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
           Or join with
         </h5>
         <div className="flex items-center justify-center my-3">
-          <FcGoogle size={30} className="cursor-pointer ml-2" 
+          <FcGoogle size={30} className="cursor-pointer ml-2"
             onClick={() => signIn("google")}
           />
           <AiFillGithub size={30} className="cursor-pointer ml-2"

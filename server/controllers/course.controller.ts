@@ -11,6 +11,8 @@ import path from "path";
 import sendMail from "../utils/sendMail";
 import axios from "axios";
 import NotificationModel from "../models/notificationModel";
+import { json } from "stream/consumers";
+import { stringify } from "querystring";
 
 
 // upload course
@@ -271,6 +273,8 @@ export const addAnwser = CatchAsyncError(
 
       await course?.save();
 
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800); //7days
+
       if (req.user?._id === question.user._id) {
         // create a notification
         await NotificationModel.create({
@@ -357,12 +361,17 @@ export const addReview = CatchAsyncError(
       }
 
       await course?.save();
+      
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800)
 
-      const notification = {
+      // create notification
+      await NotificationModel.create({
+        user: req.user?._id,
         title: "New Reivew Received",
         message: `${req.user?.name} has given a review in ${course?.name}`,
-      };
-
+      });
+        
+      
       res.status(200).json({
         success: true,
         course,
