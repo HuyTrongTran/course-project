@@ -73,6 +73,7 @@ const CourseData: FC<Props> = ({
                         />
                     ))}
                 <AiOutlinePlusCircle
+                    className={`${styles.add}`}
                     style={{ margin: "10px 0px", cursor: "pointer", width: "30px" }}
                     onClick={handleAddBenefit}
                 />
@@ -96,7 +97,7 @@ const CourseData: FC<Props> = ({
                 ))}
                 <AiOutlinePlusCircle
                     style={{ margin: "10px 0px", cursor: "pointer", width: "30px" }}
-
+                    className={`${styles.add}`}
                     onClick={handleAddPrerequisites}
                 />
             </div>

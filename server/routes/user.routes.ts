@@ -1,6 +1,7 @@
 import express from 'express';
-import { activateUser, deleteUser, getAllUsers, getUserInfo, loginUser, logoutUser, registrationUser, socialAuth, updatePassword, updateProfilePicture, updateUserInfo, updateUserRole } from '../controllers/user.controller';
+import { activateUser, deleteUser, getAllUsers, getUserInfo, loginUser, logoutUser, registrationUser, socialAuth, updateAccessToken, updatePassword, updateProfilePicture, updateUserInfo, updateUserRole } from '../controllers/user.controller';
 import { authorizeRoles, isAuthenticated } from '../middleware/auth';
+import { refreshTokenOptions } from '../utils/jwt';
 
 
 const userRouter = express.Router();

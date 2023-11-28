@@ -47,7 +47,7 @@ const Page = (props: Props) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <>
+        <div>
           <Header
             route={route}
             setRoute={setRoute}
@@ -104,7 +104,7 @@ const Page = (props: Props) => {
             </div>
           </div>
           <Footer />
-        </>
+        </div>
       )}
     </div>
   );
